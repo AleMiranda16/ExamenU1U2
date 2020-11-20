@@ -2,10 +2,9 @@ import './App.css';
 import React, { Component } from 'react';
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from './Components/Header';
-import Formulario from './Components/Formulario';
+import Encabezado from './Components/Encabezado';
+import Productos from './Components/Productos';
 import Listado from './Components/Listado';
-import firebase from './Settings/ConfigFirebase.js'
 
 
 class App extends Component {
@@ -14,7 +13,7 @@ class App extends Component {
     this.state = {
       carrito:[],
       total:0,
-      productosLista:[
+      producto:[
       {codigo:1,descripcion:"Huawei Matebook D 15", precio:15899},
       {codigo:2,descripcion:"Samsung Galaxy S10", precio:13999},
       {codigo:3,descripcion:"Samsung Galaxy A01", precio:1850},
@@ -25,67 +24,48 @@ class App extends Component {
       };
   }
   
-  componentDidMount(){
-    firebase.database().ref('Carrito').on('value', snapshot=> {
-      let carritoLista=[];
-      snapshot.forEach(row=>{
-        carritoLista.push({
-            codigo:row.val().codigo,
-            descripcion:row.val().descripcion,
-            precio:row.val().precio,
-          })
-      })
+  
+
+  eliminar=(precio,index)=>{
+
+    const temporal = this.state.carrito.filter((a,i)=>i!==index)
+
+    let total = this.state.total;
+
+    this.setState({
+      carrito:temporal,
+      total:total-precio
+    })
+
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'Producto Eliminado',
+      showConfirmButton: false,
+      timer: 1500
+    })
+    
+  }
+
+  enviar=(producto,precio)=>{
+    
+
+      let temporal = this.state.carrito;
+      let total = this.state.total;
+
       this.setState({
         ...this.state,
-        lista:carritoLista
+        carrito:[...temporal,producto],
+        total:total+precio
       })
-    });
-  }
 
-
-  guardarCambios=(e)=>{
-    this.setState({ 
-      ...this.state,
-      carrito:{
-      ...this.state.carrito,  
-      [e.target.name]: e.target.value
-      } 
-    });
-  }
-  
-  eliminar=(id)=>{
-
-    firebase.database().ref('Carrito/' + id).set(null).then(() => {
       Swal.fire({
         position: 'center',
-        icon: 'error',
-        title: 'Eliminado',
+        icon: 'success',
+        title: 'Producto agregado',
         showConfirmButton: false,
         timer: 1500
       })
-    });
-
-    const temporal = this.state.lista.filter(a=>a.id!==id)
-    this.setState({
-      ...this.state,
-      lista:temporal
-    })
-  }
-
-  enviar=(e)=>{
-    e.preventDefault();
-
-    const {codigo,descripcion, precio} = this.state.carrito;
-
-      firebase.database().ref('Carrito/' + id).update(this.state.carrito).then(() => {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Prenda agregada',
-          showConfirmButton: false,
-          timer: 1500
-        })
-      });
     
   }
   
@@ -93,18 +73,16 @@ class App extends Component {
     
     return (
       <div className="App">
-        <Header/>
+        <Encabezado/>
         <div className="Containers">
-          <Formulario
+          <Productos
               enviar={this.enviar}
-              guardarCambios={this.guardarCambios}
-              carrito={this.state.carrito}
-              desactivado={this.state.desactivado}
+              lista={this.state.producto}
+              total={this.state.total}
           />
           <Listado
-            lista={this.state.lista}
+            carrito={this.state.carrito}
             eliminar={this.eliminar}
-            modificar={this.modificar}
           />
           
         </div>

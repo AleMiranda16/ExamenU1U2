@@ -1,7 +1,7 @@
-import logo from '../logo.svg';
+import buenfin from '../buenfin.png';
 import '../App.css';
 
-const Header = () => {
+const Encabezado = () => {
     return (  
       <header className="App-header">
         <img src={buenfin} className="App-logo" alt="logo" />

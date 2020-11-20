@@ -1,12 +1,13 @@
 import '../App.css';
-import { Button ,} from 'react-bootstrap';
+import {Button ,Table} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Formulario = (props) => {
+const Productos = (props) => {
   return ( 
     <div className="List">
+       <h2  className="encabezados">Productos</h2>
     {
-            
+       
          <Table striped bordered hover>
         <thead>
           <tr>
@@ -18,12 +19,12 @@ const Formulario = (props) => {
         </thead>
           <tbody>
         {
-          props.lista.map((a,index)=>
+          props.lista.map((c,index)=>
             <tr key={index}>
-                <td>{p.codigo}</td>
-                <td>{p.descripcion}</td>
-                <td>${(p.precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td>
-                <td><Button onClick={()=>props.eliminar(a.id)} variant="danger">Eliminar</Button></td>
+                <td>{c.codigo}</td>
+                <td>{c.descripcion}</td>
+                <td>${(c.precio).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td>
+                <td><Button onClick={()=>props.enviar(c,c.precio)} >Enviar</Button></td>
             </tr>
           )
         }
@@ -31,12 +32,7 @@ const Formulario = (props) => {
         </Table>
         
       }
-      <label htmlFor="id">Total:</label>
-        <input
-          type="text"
-          onChange={props.guardarCambios}
-          value={props.ropa.total}
-        />
+      <h3  className="encabezados">Total: ${(props.total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</h3>
 
       </div>
  );

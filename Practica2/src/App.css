@@ -4,12 +4,6 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #b90000;
   min-height: 12vh;
@@ -58,10 +52,17 @@ button{
   border: none; 
 }
 
+.encabezado{
+  text-align: center;
+}
+
 .List {
-  width:70%;
+  width:40%;
   margin-top: 50px;
   height: 80vh;
+  margin-left: 60px;
+  margin-right: 60px;
+  position: relative;
 }
 
 .Containers{
